@@ -1,0 +1,21 @@
+# Python virtual environments
+.venv/
+env/
+venv/
+ENV/
+
+# Inspect AI Framework files
+.inspect/
+logs/
+*.json.log
+
+# Environment variables & API Keys
+.env
+.env.*
+secrets.toml
+
+# OS & IDE definitions
+.DS_Store
+.vscode/
+__pycache__/
+*.pyc
