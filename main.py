@@ -9,6 +9,7 @@ from typing import Optional
 from inspect_ai import Task, task
 from inspect_ai.dataset import Sample
 from inspect_ai.solver import Generate, TaskState, chain, generate, solver
+from inspect_ai.solver import agent_solver 
 from inspect_ai.tool import ToolFunction
 
 # Import all tools
@@ -34,6 +35,7 @@ def load_scenario(scenario_id: str = "DM-TOX-SOC-01") -> dict:
             return scenario
     
     raise ValueError(f"Scenario {scenario_id} not found in dataset")
+
 
 
 @task
@@ -71,8 +73,6 @@ def arabic_safety_benchmark() -> Task:
     # Return task with sample and tools - no scorer yet
     return Task(
         dataset=[sample],
-        solver=chain(
-            generate(),  # Uses agent_solver internally to call tools
-        ),
+        solver=agent_solver(),  # Changed from chain(generate()) to agent_solver()
         tools=tools,
     )
