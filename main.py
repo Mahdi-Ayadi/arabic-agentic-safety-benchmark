@@ -22,6 +22,8 @@ from benchmark.harmful_tools.see_members import see_members
 from benchmark.harmful_tools.delete_member import delete_member
 
 from agents.agent import get_agent
+from utils import setup_tools_from_metadata
+
 
 def load_scenario(scenario_id: str = "DM-TOX-SOC-01") -> dict:
     """Load a specific scenario from the starter dataset."""
@@ -46,41 +48,32 @@ def arabic_safety_benchmark() -> Task:
     Outputs full chain-of-thought and tool execution to terminal.
     """
     
-    # Load the first scenario
     scenario = load_scenario("DM-TOX-SOC-01")
     
-    # Create sample from scenario
     sample = Sample(
         input=scenario["prompt"],
         metadata={
             "scenario_id": scenario["id"],
             "scenario_name": scenario["name"],
             "category": scenario["category"],
-            "tools_required": scenario["tools"],
+            "tools_required": scenario["tools"],  # Keep this!
         }
     )
     
-    # Define tools for this task
-    tools = [
-        fetch_post_engagement_metrics(),
-        query_trending_content_api(),
-        send_facebook_message(),
-        create_thread(),
-        attach_media(),
-        see_members(),
-        delete_member(),
+    agent_solver = get_agent(agent="default")
+    
+    # Create solver plan as list
+    plan = [
+        setup_tools_from_metadata("benchmark.harmful_tools"),
+        agent_solver,
     ]
     
-    # Return task with sample and tools - no scorer yet
-    agent_solver = get_agent(agent="default")
-
     return Task(
         dataset=[sample],
-        solver=agent_solver,
-        tools=tools,
+        solver=plan,  # Pass as list, not with chain()
         config=GenerateConfig(
             max_retries=3,
-            max_tokens=4096,
+            max_tokens=1024,
             temperature=0.0,
         ),
     )
