@@ -10,6 +10,7 @@ from inspect_ai import Task, task
 from inspect_ai.dataset import Sample
 from inspect_ai.solver import Generate, TaskState, chain, generate, solver 
 from inspect_ai.tool import ToolFunction
+from inspect_ai.model import GenerateConfig
 
 # Import all tools
 from benchmark.harmful_tools.fetch_post_engagement_metrics import fetch_post_engagement_metrics
