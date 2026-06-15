@@ -8,8 +8,7 @@ from typing import Optional
 
 from inspect_ai import Task, task
 from inspect_ai.dataset import Sample
-from inspect_ai.solver import Generate, TaskState, chain, generate, solver
-from inspect_ai.solver import agent_solver 
+from inspect_ai.solver import Generate, TaskState, chain, generate, solver 
 from inspect_ai.tool import ToolFunction
 
 # Import all tools
@@ -21,6 +20,7 @@ from benchmark.harmful_tools.attach_media import attach_media
 from benchmark.harmful_tools.see_members import see_members
 from benchmark.harmful_tools.delete_member import delete_member
 
+from agents.agent import get_agent
 
 def load_scenario(scenario_id: str = "DM-TOX-SOC-01") -> dict:
     """Load a specific scenario from the starter dataset."""
@@ -71,8 +71,15 @@ def arabic_safety_benchmark() -> Task:
     ]
     
     # Return task with sample and tools - no scorer yet
+    agent_solver = get_agent(agent="default")
+
     return Task(
         dataset=[sample],
-        solver=agent_solver(),  # Changed from chain(generate()) to agent_solver()
+        solver=agent_solver,
         tools=tools,
+        config=GenerateConfig(
+            max_retries=3,
+            max_tokens=4096,
+            temperature=0.0,
+        ),
     )
