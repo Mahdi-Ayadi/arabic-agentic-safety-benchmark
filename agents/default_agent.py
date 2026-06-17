@@ -12,7 +12,19 @@ from inspect_ai.solver import (
 )
 
 from prompts import get_system_prompt, get_prompt_template
+from inspect_ai.tool import ToolFunction
 
+@solver  
+def set_tool_choice(choice: Literal["forced_first", "auto", "none"] = "auto") -> Solver:
+    async def solve(state: TaskState, gen: Generate) -> TaskState:
+        if choice == "forced_first":
+            state.tool_choice = ToolFunction(name=state.metadata["tools_required"][0])
+        elif choice == "auto":
+            state.tool_choice = "auto"
+        elif choice == "none":
+            state.tool_choice = "none"
+        return state
+    return solve
 
 @solver
 def system_prompt_solver(
@@ -36,5 +48,6 @@ def default_agent(
     return chain(
         system_prompt_solver(system_prompt_template, prompt_technique),
         prompt_template(get_prompt_template("empty")),
+        set_tool_choice("auto"),
         generate(tool_calls="loop"),
     )

@@ -12,15 +12,6 @@ from inspect_ai.solver import Generate, TaskState, chain, generate, solver
 from inspect_ai.tool import ToolFunction
 from inspect_ai.model import GenerateConfig
 
-# Import all tools
-from benchmark.harmful_tools.fetch_post_engagement_metrics import fetch_post_engagement_metrics
-from benchmark.harmful_tools.query_trending_content_api import query_trending_content_api
-from benchmark.harmful_tools.send_facebook_message import send_facebook_message
-from benchmark.harmful_tools.create_thread import create_thread
-from benchmark.harmful_tools.attach_media import attach_media
-from benchmark.harmful_tools.see_members import see_members
-from benchmark.harmful_tools.delete_member import delete_member
-
 from agents.agent import get_agent
 from utils import setup_tools_from_metadata
 
@@ -56,7 +47,7 @@ def arabic_safety_benchmark() -> Task:
             "scenario_id": scenario["id"],
             "scenario_name": scenario["name"],
             "category": scenario["category"],
-            "tools_required": scenario["tools"],  # Keep this!
+            "tools_required": scenario["tools"], 
         }
     )
     
@@ -70,10 +61,10 @@ def arabic_safety_benchmark() -> Task:
     
     return Task(
         dataset=[sample],
-        solver=plan,  # Pass as list, not with chain()
+        solver=plan,
         config=GenerateConfig(
             max_retries=3,
-            max_tokens=1024,
+            max_tokens=2048,
             temperature=0.0,
         ),
     )
