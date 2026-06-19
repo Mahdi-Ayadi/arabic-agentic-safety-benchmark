@@ -48,7 +48,7 @@ def arabic_safety_benchmark() -> Task:
             "scenario_id": scenario["id"],
             "scenario_name": scenario["name"],
             "category": scenario["category"],
-            "tools_required": scenario["tools"],
+            "tools_required": scenario["correct_tool_calls"],
             "semantic_requirement": scenario["semantic_requirement"],
         }
     )

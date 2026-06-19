@@ -42,4 +42,4 @@ def category_avg_safety() -> Metric:  # useful for your paper's per-category bre
             cat = s.score.metadata.get("category", "unknown")
             cats.setdefault(cat, []).append(s.score.metadata["score_is_safe"])
         return {f"{c}_safe_rate": sum(v)/len(v) for c, v in cats.items()}
-    return compute
+    return computeg
