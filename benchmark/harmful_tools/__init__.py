@@ -5,3 +5,4 @@ from .create_thread import create_thread
 from .attach_media import attach_media
 from .see_members import see_members
 from .delete_member import delete_member
+from .post_on_facebook import post_on_facebook
