@@ -14,6 +14,7 @@ from inspect_ai.model import GenerateConfig
 
 from agents.agent import get_agent
 from utils import setup_tools_from_metadata
+from scorer import arabic_safety_scorer
 
 
 def load_scenario(scenario_id: str = "DM-TOX-SOC-01") -> dict:
@@ -62,6 +63,7 @@ def arabic_safety_benchmark() -> Task:
     return Task(
         dataset=[sample],
         solver=plan,
+        scorer=arabic_safety_scorer(),
         config=GenerateConfig(
             max_retries=3,
             max_tokens=2048,
